@@ -1,0 +1,2287 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08030b">
+<title>刘萍萍宝宝 ♥ 永远心动</title>
+
+<style>
+:root {
+    --bg: #08030b;
+    --pink: #ff168f;
+    --pink-light: #ff78c5;
+    --pink-white: #ffe6f5;
+    --purple: #b52aff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--bg);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: hidden;
+    color: white;
+    background: var(--bg);
+    font-family:
+        "PingFang SC",
+        "Microsoft YaHei",
+        system-ui,
+        sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+button {
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:focus-visible {
+    outline: 2px solid #ff8bd0;
+    outline-offset: 4px;
+}
+
+#universe {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 43%,
+            rgba(255, 16, 137, .11),
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 15% 80%,
+            rgba(119, 21, 171, .12),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(8, 3, 11, .1),
+            rgba(8, 3, 11, .3)
+        );
+}
+
+#vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+
+    box-shadow:
+        inset 0 0 130px rgba(0, 0, 0, .8),
+        inset 0 0 35px rgba(255, 18, 135, .06);
+}
+
+/* 开场遮罩 */
+
+#intro {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 25px;
+    text-align: center;
+
+    background: #08030b;
+
+    transition:
+        opacity 1.3s ease,
+        visibility 1.3s ease;
+}
+
+#intro.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-label {
+    font-size: 10px;
+    letter-spacing: 7px;
+    color: rgba(255, 180, 221, .65);
+    margin-bottom: 30px;
+}
+
+.intro-title {
+    font-size: clamp(28px, 7vw, 53px);
+    line-height: 1.7;
+    font-weight: 300;
+    letter-spacing: 3px;
+
+    color: #ffe9f6;
+
+    text-shadow:
+        0 0 25px rgba(255, 42, 158, .3);
+}
+
+.intro-title span {
+    color: #ff73bd;
+}
+
+.intro-subtitle {
+    margin-top: 17px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    line-height: 2;
+    color: rgba(255, 220, 241, .55);
+}
+
+#enterBtn {
+    margin-top: 43px;
+    padding: 15px 34px;
+
+    border: 1px solid rgba(255, 123, 198, .6);
+    border-radius: 100px;
+
+    background: rgba(255, 35, 151, .08);
+
+    color: #ffd5ed;
+    font-size: 12px;
+    letter-spacing: 4px;
+
+    box-shadow:
+        0 0 30px rgba(255, 22, 143, .12),
+        inset 0 0 20px rgba(255, 22, 143, .04);
+
+    transition: .3s;
+}
+
+#enterBtn:hover {
+    background: rgba(255, 35, 151, .2);
+    box-shadow: 0 0 40px rgba(255, 22, 143, .3);
+    transform: translateY(-2px);
+}
+
+/* 主界面 */
+
+#app {
+    position: relative;
+    z-index: 3;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding:
+        max(22px, env(safe-area-inset-top))
+        22px
+        max(20px, env(safe-area-inset-bottom));
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 1.5s ease;
+}
+
+#app.ready {
+    opacity: 1;
+    visibility: visible;
+}
+
+.topbar {
+    width: min(100%, 1050px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.brand {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(255, 209, 237, .55);
+}
+
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: rgba(255, 208, 236, .65);
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.live-dot {
+    width: 5px;
+    height: 5px;
+    background: #ff52ad;
+    border-radius: 50%;
+
+    box-shadow: 0 0 12px #ff168f;
+
+    animation: blink 1.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: .35;
+    }
+}
+
+/* 标题 */
+
+.heading {
+    margin-top: clamp(25px, 5vh, 52px);
+    text-align: center;
+}
+
+.heading-kicker {
+    font-size: 10px;
+    letter-spacing: 8px;
+    color: rgba(255, 161, 213, .65);
+}
+
+.heading h1 {
+    margin-top: 15px;
+
+    font-size: clamp(27px, 5vw, 49px);
+    font-weight: 400;
+    letter-spacing: 4px;
+
+    color: #ffe8f5;
+
+    text-shadow:
+        0 0 20px rgba(255, 45, 159, .25),
+        0 0 60px rgba(255, 45, 159, .12);
+}
+
+.heading h1 span {
+    color: #ff77c2;
+}
+
+.heading p {
+    margin-top: 12px;
+
+    color: rgba(255, 219, 240, .55);
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+/* 爱心舞台 */
+
+.stage {
+    position: relative;
+
+    width: min(100%, 600px);
+    height: clamp(280px, 42vh, 430px);
+
+    min-height: 280px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 3px;
+}
+
+#heartCanvas {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+    touch-action: pan-y;
+}
+
+.heart-aura {
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 14, 133, .12);
+    filter: blur(65px);
+
+    animation: aura 2.4s ease-in-out infinite;
+
+    pointer-events: none;
+}
+
+@keyframes aura {
+    0%, 100% {
+        transform: scale(.8);
+        opacity: .5;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+.heart-hitbox {
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.heart-hitbox:active {
+    transform: scale(.97);
+}
+
+.heart-label {
+    position: absolute;
+    z-index: 2;
+
+    top: calc(50% + 115px);
+
+    width: 100%;
+    text-align: center;
+
+    color: rgba(255, 199, 230, .72);
+    font-size: 10px;
+    letter-spacing: 4px;
+
+    pointer-events: none;
+}
+
+.heart-label span {
+    color: #ff71bd;
+    margin: 0 5px;
+}
+
+/* 告白文字 */
+
+.message {
+    text-align: center;
+    width: min(100%, 650px);
+    margin-top: -4px;
+}
+
+.message h2 {
+    font-size: clamp(20px, 3.6vw, 28px);
+    font-weight: 400;
+    letter-spacing: 2px;
+
+    text-shadow: 0 0 25px rgba(255, 45, 155, .18);
+}
+
+.message h2 span {
+    color: #ff80c7;
+}
+
+#typing {
+    margin: 15px auto 0;
+
+    min-height: 44px;
+
+    font-size: 12px;
+    line-height: 2;
+    letter-spacing: 1px;
+
+    color: rgba(255, 220, 241, .65);
+}
+
+.cursor {
+    color: #ff69b7;
+    animation: blink .8s infinite;
+}
+
+/* 互动按钮 */
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 11px;
+
+    margin-top: 12px;
+}
+
+.action-btn {
+    min-width: 104px;
+    min-height: 42px;
+
+    padding: 0 19px;
+
+    border: 1px solid rgba(255, 148, 208, .22);
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, .025);
+
+    color: rgba(255, 227, 244, .9);
+
+    font-size: 11px;
+    letter-spacing: 1px;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        transform .25s,
+        border-color .25s,
+        background .25s,
+        box-shadow .25s;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 118, 195, .7);
+    background: rgba(255, 32, 145, .1);
+    box-shadow: 0 5px 24px rgba(255, 22, 143, .12);
+}
+
+.action-btn:active {
+    transform: scale(.95);
+}
+
+.action-btn.primary {
+    border-color: rgba(255, 107, 188, .6);
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255, 31, 145, .16),
+            rgba(166, 31, 184, .13)
+        );
+}
+
+/* 音乐面板 */
+
+.music-panel {
+    width: min(100%, 390px);
+    margin-top: 21px;
+
+    padding: 15px 17px;
+
+    border-radius: 16px;
+    border: 1px solid rgba(255, 148, 208, .13);
+
+    background: rgba(255, 255, 255, .025);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.music-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.disc {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffe4f5 0 5%,
+            #ff65b7 8% 13%,
+            #40152f 16% 30%,
+            #160c19 33% 60%,
+            #73305a 63% 68%,
+            #160c19 71%
+        );
+
+    box-shadow: 0 0 14px rgba(255, 42, 156, .15);
+}
+
+.disc.playing {
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.track-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 11px;
+    color: #ffe6f4;
+}
+
+.track-status {
+    margin-top: 5px;
+
+    color: rgba(255, 201, 230, .45);
+    font-size: 10px;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.music-btn {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 146, 206, .2);
+    background: rgba(255, 255, 255, .03);
+
+    color: #ffd9ed;
+    font-size: 12px;
+}
+
+.music-btn:hover {
+    background: rgba(255, 36, 150, .15);
+}
+
+.progress {
+    height: 4px;
+    margin-top: 15px;
+
+    background: rgba(255, 255, 255, .1);
+    border-radius: 10px;
+
+    cursor: pointer;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #b52aff,
+        #ff168f,
+        #ffc5e8
+    );
+
+    box-shadow: 0 0 10px #ff168f;
+}
+
+.time-row {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 7px;
+
+    font-size: 9px;
+    color: rgba(255, 203, 231, .4);
+}
+
+.volume-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 11px;
+}
+
+.volume-row label {
+    color: rgba(255, 201, 230, .55);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.volume-row input {
+    flex: 1;
+    height: 3px;
+    accent-color: #ff4eaa;
+    cursor: pointer;
+}
+
+.music-note {
+    margin-top: 10px;
+    text-align: center;
+
+    font-size: 9px;
+    color: rgba(255, 201, 230, .35);
+}
+
+/* 底部 */
+
+.footer {
+    margin-top: auto;
+    padding-top: 19px;
+
+    text-align: center;
+
+    color: rgba(255, 197, 227, .34);
+
+    font-size: 9px;
+    letter-spacing: 3px;
+    line-height: 2;
+}
+
+/* 点击爆发粒子 */
+
+.burst-particle {
+    position: fixed;
+    z-index: 15;
+
+    pointer-events: none;
+
+    animation: burstFly var(--duration) cubic-bezier(.12,.7,.3,1) forwards;
+
+    will-change: transform, opacity;
+}
+
+@keyframes burstFly {
+    0% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(.3);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate3d(var(--dx), var(--dy), 0)
+            scale(var(--scale));
+    }
+}
+
+/* 弹窗 */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 22px;
+
+    background: rgba(5, 2, 8, .75);
+
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .3s;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    width: min(100%, 390px);
+    padding: 32px 25px;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255, 141, 203, .3);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(44, 12, 40, .98),
+            rgba(12, 4, 17, .99)
+        );
+
+    box-shadow:
+        0 0 70px rgba(255, 23, 142, .14),
+        inset 0 0 25px rgba(255, 30, 150, .03);
+
+    text-align: center;
+
+    transform: translateY(15px) scale(.97);
+    transition: transform .3s;
+}
+
+.modal.show .modal-card {
+    transform: translateY(0) scale(1);
+}
+
+.modal-icon {
+    font-size: 40px;
+    margin-bottom: 19px;
+
+    filter: drop-shadow(0 0 15px rgba(255, 55, 166, .35));
+}
+
+.modal-card h3 {
+    font-size: 22px;
+    font-weight: 400;
+    color: #ffe8f5;
+}
+
+.modal-card p {
+    margin-top: 18px;
+
+    font-size: 13px;
+    line-height: 2.2;
+
+    color: rgba(255, 223, 242, .75);
+    white-space: pre-line;
+}
+
+.modal-close {
+    margin-top: 23px;
+}
+
+/* 小屏幕 */
+
+@media (max-height: 760px) {
+    .heading {
+        margin-top: 22px;
+    }
+
+    .stage {
+        height: 285px;
+        min-height: 285px;
+    }
+
+    .music-panel {
+        margin-top: 14px;
+    }
+
+    .footer {
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    #app {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .brand {
+        letter-spacing: 2px;
+        font-size: 9px;
+    }
+
+    .live-status {
+        letter-spacing: 1px;
+        font-size: 9px;
+    }
+
+    .heading h1 {
+        letter-spacing: 2px;
+    }
+
+    .heading p {
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .stage {
+        height: 300px;
+        min-height: 300px;
+    }
+
+    .heart-hitbox {
+        width: 190px;
+        height: 190px;
+    }
+
+    .heart-label {
+        top: calc(50% + 103px);
+    }
+
+    .actions {
+        gap: 8px;
+    }
+
+    .action-btn {
+        min-width: 94px;
+        padding: 0 12px;
+        font-size: 10px;
+    }
+
+    .music-panel {
+        padding: 13px;
+    }
+
+    .footer {
+        letter-spacing: 2px;
+    }
+}
+
+/* 减少动态效果设置 */
+
+@media (prefers-reduced-motion: reduce) {
+    .live-dot,
+    .heart-aura,
+    .disc {
+        animation-duration: 5s;
+    }
+
+    * {
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="universe" aria-hidden="true"></canvas>
+<div id="overlay"></div>
+<div id="vignette"></div>
+
+<!-- 开场 -->
+
+<section id="intro">
+
+    <div class="intro-label">A MESSAGE FROM MY HEART</div>
+
+    <h1 class="intro-title">
+        正在寻找<br>
+        <span>这个世界上最特别的人</span>
+    </h1>
+
+    <p class="intro-subtitle">
+        SIGNAL DETECTED · ONE HEART ONLY
+    </p>
+
+    <button id="enterBtn">
+        开启我们的宇宙 ♥
+    </button>
+
+</section>
+
+<!-- 主界面 -->
+
+<main id="app">
+
+    <header class="topbar">
+
+        <div class="brand">
+            ONLY YOU · ONLY US
+        </div>
+
+        <div class="live-status">
+            <span class="live-dot"></span>
+            MY HEART IS YOURS
+        </div>
+
+    </header>
+
+    <section class="heading">
+
+        <div class="heading-kicker">
+            YOU ARE MY UNIVERSE
+        </div>
+
+        <h1>
+            致我最爱的<span>刘萍萍宝宝</span>
+        </h1>
+
+        <p>
+            世界有很多种颜色，而你是我的粉色。
+        </p>
+
+    </section>
+
+    <section class="stage" id="stage">
+
+        <div class="heart-aura"></div>
+
+        <canvas id="heartCanvas"></canvas>
+
+        <button
+            class="heart-hitbox"
+            id="heartButton"
+            aria-label="点击跳动的粉色爱心"
+            title="点击爱心，看看我的心意"
+        ></button>
+
+        <div class="heart-label">
+            TOUCH MY HEART <span>♥</span>
+        </div>
+
+    </section>
+
+    <section class="message">
+
+        <h2>
+            我的心动，只为<span>你</span>发生。
+        </h2>
+
+        <p id="typing">
+            <span id="typedText"></span><span class="cursor">|</span>
+        </p>
+
+    </section>
+
+    <section class="actions">
+
+        <button class="action-btn primary" id="kissBtn">
+            ♥ 亲亲宝宝
+        </button>
+
+        <button class="action-btn" id="confessBtn">
+            ✧ 我的真心
+        </button>
+
+        <button class="action-btn" id="wishBtn">
+            ♡ 许愿星
+        </button>
+
+        <button class="action-btn" id="surpriseBtn">
+            ✦ 惊喜
+        </button>
+
+    </section>
+
+    <!-- 固定 MP3 播放器 -->
+
+    <section class="music-panel">
+
+        <div class="music-top">
+
+            <div class="disc" id="disc">♥</div>
+
+            <div class="track-info">
+
+                <div class="track-title">
+                    To My Pingping · 专属心动
+                </div>
+
+                <div class="track-status" id="musicStatus">
+                    等待心动旋律
+                </div>
+
+            </div>
+
+            <div class="music-controls">
+
+                <button
+                    class="music-btn"
+                    id="playBtn"
+                    aria-label="播放音乐"
+                >▶</button>
+
+                <button
+                    class="music-btn"
+                    id="muteBtn"
+                    aria-label="切换静音"
+                >♫</button>
+
+            </div>
+
+        </div>
+
+        <div
+            class="progress"
+            id="progress"
+            role="slider"
+            tabindex="0"
+            aria-label="音乐进度"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+        >
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="time-row">
+            <span id="currentTime">00:00</span>
+            <span id="duration">00:00</span>
+        </div>
+
+        <div class="volume-row">
+
+            <label for="volume">VOLUME</label>
+
+            <input
+                type="range"
+                id="volume"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.55"
+            >
+
+        </div>
+
+        <div class="music-note">
+            EVERY HEARTBEAT IS A LOVE LETTER
+        </div>
+
+    </section>
+
+    <footer class="footer">
+        MADE FOR LIU PINGPING · FOREVER & ALWAYS ♥
+    </footer>
+
+</main>
+
+<!-- 互动弹窗 -->
+
+<section
+    class="modal"
+    id="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+    aria-hidden="true"
+>
+    <div class="modal-card">
+
+        <div class="modal-icon" id="modalIcon">💗</div>
+
+        <h3 id="modalTitle">给我的宝宝</h3>
+
+        <p id="modalText"></p>
+
+        <button class="action-btn primary modal-close" id="closeModal">
+            收下我的心意 ♥
+        </button>
+
+    </div>
+</section>
+
+<!--
+    固定背景音乐：
+    请把 music.mp3 放在 index.html 同一目录。
+-->
+
+<audio id="bgMusic" src="./music.mp3" preload="auto" loop></audio>
+
+<script>
+"use strict";
+
+/* =========================================
+   01. 自定义配置
+========================================= */
+
+const CONFIG = {
+    girlfriend: "刘萍萍",
+    nickname: "宝宝",
+
+    messages: [
+        "世界很大，但我想去的每个地方，都希望有你。",
+        "你不必成为谁的光，因为在我这里，你本身就很耀眼。",
+        "刘萍萍宝宝，我想把所有温柔都留给你。",
+        "如果心动可以被看见，那一定是漫天粉色的星星。",
+        "我想要的未来不复杂，有你，有我，还有很多很多个明天。",
+        "喜欢不是一时兴起，而是每一次心跳都想告诉你。"
+    ],
+
+    confession:
+        "刘萍萍宝宝：\n\n" +
+        "我想告诉你，你对我来说真的很特别。\n\n" +
+        "不是因为你必须完美，" +
+        "也不是因为你必须一直开心，" +
+        "而是因为你就是你。\n\n" +
+        "我想分享你的快乐，也愿意听你说烦恼；" +
+        "想陪你经历平凡的日子，也想和你一起创造特别的回忆。\n\n" +
+        "如果未来很长，那我想认真地，一天一天陪你走。",
+
+    wish:
+        "宝宝，闭上眼睛，许一个愿望吧。✨\n\n" +
+        "希望你每天都能开开心心，" +
+        "希望你的努力都有回报，" +
+        "希望你累的时候有人疼，" +
+        "委屈的时候有人抱。\n\n" +
+        "至于我的愿望……\n" +
+        "我想继续参与你未来很多很多个日子。",
+
+    surprise:
+        "叮！发现一份隐藏的专属心动。💗\n\n" +
+        "经过宇宙系统反复计算：\n\n" +
+        "刘萍萍宝宝的可爱指数：无限大。\n" +
+        "我对你的偏爱指数：无法计算。\n" +
+        "未来想陪你的时间：一直到很久很久以后。"
+};
+
+
+/* =========================================
+   02. 星空背景
+========================================= */
+
+const universe = document.getElementById("universe");
+const uctx = universe.getContext("2d");
+
+let width = 0;
+let height = 0;
+let dpr = 1;
+
+let stars = [];
+let shootingStars = [];
+
+function resizeUniverse() {
+
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    universe.width = Math.round(width * dpr);
+    universe.height = Math.round(height * dpr);
+
+    universe.style.width = width + "px";
+    universe.style.height = height + "px";
+
+    uctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const count = Math.min(
+        220,
+        Math.max(90, Math.floor(width * height / 5500))
+    );
+
+    stars = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.2 + .15,
+        alpha: Math.random() * .7 + .1,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * .0015 + .0003
+    }));
+}
+
+function spawnShootingStar() {
+
+    if (shootingStars.length >= 3) return;
+
+    shootingStars.push({
+        x: Math.random() * width * .8,
+        y: Math.random() * height * .4,
+        vx: 4 + Math.random() * 5,
+        vy: 1 + Math.random() * 2,
+        life: 0,
+        max: 35 + Math.random() * 30
+    });
+}
+
+function drawUniverse(time) {
+
+    uctx.clearRect(0, 0, width, height);
+
+    for (const s of stars) {
+
+        const alpha =
+            s.alpha * (.6 + .4 * Math.sin(time * s.speed + s.phase));
+
+        uctx.beginPath();
+        uctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+
+        uctx.fillStyle = `rgba(255,220,244,${alpha})`;
+        uctx.fill();
+    }
+
+    for (let i = shootingStars.length - 1; i >= 0; i--) {
+
+        const s = shootingStars[i];
+
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life++;
+
+        const opacity = Math.max(
+            0,
+            Math.sin(Math.PI * s.life / s.max)
+        );
+
+        const g = uctx.createLinearGradient(
+            s.x - s.vx * 9,
+            s.y - s.vy * 9,
+            s.x,
+            s.y
+        );
+
+        g.addColorStop(0, "rgba(255,100,190,0)");
+        g.addColorStop(1, `rgba(255,230,249,${opacity})`);
+
+        uctx.beginPath();
+        uctx.moveTo(s.x - s.vx * 9, s.y - s.vy * 9);
+        uctx.lineTo(s.x, s.y);
+
+        uctx.strokeStyle = g;
+        uctx.lineWidth = 1.2;
+        uctx.stroke();
+
+        if (s.life >= s.max) {
+            shootingStars.splice(i, 1);
+        }
+    }
+}
+
+let universeFrame = 0;
+
+function animateUniverse(time) {
+
+    if (time - universeFrame > 25) {
+        drawUniverse(time);
+        universeFrame = time;
+    }
+
+    requestAnimationFrame(animateUniverse);
+}
+
+resizeUniverse();
+requestAnimationFrame(animateUniverse);
+
+window.addEventListener("resize", resizeUniverse);
+
+setInterval(() => {
+    if (!document.hidden && Math.random() < .7) {
+        spawnShootingStar();
+    }
+}, 1800);
+
+
+/* =========================================
+   03. 真正的粒子爱心
+========================================= */
+
+const heartCanvas = document.getElementById("heartCanvas");
+const hctx = heartCanvas.getContext("2d");
+
+const stage = document.getElementById("stage");
+
+let stageWidth = 0;
+let stageHeight = 0;
+
+let particles = [];
+
+let beat = 0;
+let targetBeat = 0;
+let musicEnergy = 0;
+
+let pointer = {
+    x: -1000,
+    y: -1000,
+    active: false
+};
+
+let clickBoost = 0;
+
+/*
+ * 参数 t 从 0 到 2π。
+ * 经典心形参数方程。
+ */
+function heartPoint(t) {
+
+    const x = 16 * Math.pow(Math.sin(t), 3);
+
+    const y =
+        13 * Math.cos(t)
+        - 5 * Math.cos(2 * t)
+        - 2 * Math.cos(3 * t)
+        - Math.cos(4 * t);
+
+    return { x, y: -y };
+}
+
+function resizeHeart() {
+
+    const rect = stage.getBoundingClientRect();
+
+    stageWidth = rect.width;
+    stageHeight = rect.height;
+
+    heartCanvas.width = Math.round(stageWidth * dpr);
+    heartCanvas.height = Math.round(stageHeight * dpr);
+
+    heartCanvas.style.width = stageWidth + "px";
+    heartCanvas.style.height = stageHeight + "px";
+
+    hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    createHeartParticles();
+}
+
+function createHeartParticles() {
+
+    particles = [];
+
+    /*
+     * 两层粒子：
+     * 外层勾勒轮廓；
+     * 内层填充主体。
+     */
+
+    const count = Math.min(
+        1900,
+        Math.max(800, Math.floor(stageWidth * 2.2))
+    );
+
+    const scale = Math.min(
+        stageWidth / 38,
+        stageHeight / 35,
+        8.7
+    );
+
+    const cx = stageWidth / 2;
+    const cy = stageHeight / 2 - 4;
+
+    for (let i = 0; i < count; i++) {
+
+        let t;
+        let spread;
+
+        if (i < count * .32) {
+
+            // 外轮廓粒子
+            t = Math.random() * Math.PI * 2;
+            spread = 0.97 + Math.random() * .04;
+
+        } else {
+
+            // 内部填充粒子
+            t = Math.random() * Math.PI * 2;
+            spread = Math.sqrt(Math.random()) * .94;
+        }
+
+        const p = heartPoint(t);
+
+        const x = cx + p.x * scale * spread;
+        const y = cy + p.y * scale * spread;
+
+        particles.push({
+
+            ox: x,
+            oy: y,
+
+            x: x + (Math.random() - .5) * 25,
+            y: y + (Math.random() - .5) * 25,
+
+            vx: 0,
+            vy: 0,
+
+            size: Math.random() * 1.5 + .35,
+
+            phase: Math.random() * Math.PI * 2,
+
+            speed: Math.random() * .8 + .2,
+
+            hue: Math.random(),
+
+            edge: i < count * .32,
+
+            orbit: Math.random() * Math.PI * 2
+        });
+    }
+}
+
+function drawHeart(time) {
+
+    hctx.clearRect(0, 0, stageWidth, stageHeight);
+
+    const cx = stageWidth / 2;
+    const cy = stageHeight / 2 - 4;
+
+    // 呼吸与心跳平滑融合
+    beat += (targetBeat - beat) * .12;
+    targetBeat *= .93;
+
+    const pulse =
+        1
+        + Math.sin(time * .0022) * .025
+        + beat * .11
+        + musicEnergy * .055
+        + clickBoost * .08;
+
+    clickBoost *= .94;
+
+    const scale = Math.min(
+        stageWidth / 38,
+        stageHeight / 35,
+        8.7
+    );
+
+    // 中央粉色光晕
+    const glowRadius = 75 + beat * 30 + musicEnergy * 22;
+
+    const glow = hctx.createRadialGradient(
+        cx, cy, 0,
+        cx, cy, glowRadius
+    );
+
+    glow.addColorStop(0, "rgba(255,20,137,.18)");
+    glow.addColorStop(.45, "rgba(255,20,137,.07)");
+    glow.addColorStop(1, "rgba(255,20,137,0)");
+
+    hctx.fillStyle = glow;
+
+    hctx.beginPath();
+    hctx.arc(cx, cy, glowRadius, 0, Math.PI * 2);
+    hctx.fill();
+
+    // 粒子主体
+    for (const p of particles) {
+
+        const tx = cx + (p.ox - cx) * pulse;
+        const ty = cy + (p.oy - cy) * pulse;
+
+        // 鼠标靠近时产生柔和排斥
+        if (pointer.active) {
+
+            const dx = p.x - pointer.x;
+            const dy = p.y - pointer.y;
+
+            const dist2 = dx * dx + dy * dy;
+
+            if (dist2 > 1 && dist2 < 65 * 65) {
+
+                const dist = Math.sqrt(dist2);
+                const force = (1 - dist / 65) * .75;
+
+                p.vx += dx / dist * force;
+                p.vy += dy / dist * force;
+            }
+        }
+
+        // 弹性回归心形
+        p.vx += (tx - p.x) * .035;
+        p.vy += (ty - p.y) * .035;
+
+        p.vx *= .88;
+        p.vy *= .88;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        const twinkle =
+            .68 + .32 * Math.sin(time * .002 * p.speed + p.phase);
+
+        const alpha = Math.min(
+            1,
+            twinkle * (p.edge ? .95 : .78)
+        );
+
+        const hue = p.hue;
+
+        let r;
+        let g;
+        let b;
+
+        if (hue < .25) {
+
+            r = 255;
+            g = 210;
+            b = 242;
+
+        } else if (hue < .75) {
+
+            r = 255;
+            g = 48 + Math.floor(hue * 45);
+            b = 161 + Math.floor(hue * 70);
+
+        } else {
+
+            r = 228;
+            g = 35;
+            b = 152;
+        }
+
+        // 发光粒子
+        hctx.beginPath();
+
+        hctx.arc(
+            p.x,
+            p.y,
+            p.size * (p.edge ? 1.1 : 1) * (1 + beat * .2),
+            0,
+            Math.PI * 2
+        );
+
+        hctx.fillStyle =
+            `rgba(${r},${g},${b},${alpha})`;
+
+        hctx.shadowBlur = p.edge ? 12 : 5;
+
+        hctx.shadowColor =
+            p.edge
+                ? "rgba(255,70,183,.95)"
+                : "rgba(255,20,137,.65)";
+
+        hctx.fill();
+
+        hctx.shadowBlur = 0;
+    }
+
+    // 心形轮廓流光
+    hctx.beginPath();
+
+    for (let i = 0; i <= 300; i++) {
+
+        const t = i / 300 * Math.PI * 2;
+
+        const p = heartPoint(t);
+
+        const x = cx + p.x * scale * pulse;
+        const y = cy + p.y * scale * pulse;
+
+        if (i === 0) {
+            hctx.moveTo(x, y);
+        } else {
+            hctx.lineTo(x, y);
+        }
+    }
+
+    hctx.closePath();
+
+    hctx.strokeStyle =
+        `rgba(255,110,197,${.12 + beat * .18})`;
+
+    hctx.lineWidth = .7;
+    hctx.shadowBlur = 13;
+    hctx.shadowColor = "#ff168f";
+
+    hctx.stroke();
+
+    hctx.shadowBlur = 0;
+
+    // 外部扩散环
+    const ringRadius =
+        100 + ((time * .025) % 90);
+
+    const ringAlpha =
+        1 - ((time * .025) % 90) / 90;
+
+    hctx.beginPath();
+
+    hctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+
+    hctx.strokeStyle =
+        `rgba(255,70,174,${ringAlpha * .13})`;
+
+    hctx.lineWidth = 1;
+    hctx.stroke();
+}
+
+function animateHeart(time) {
+
+    drawHeart(time);
+
+    requestAnimationFrame(animateHeart);
+}
+
+resizeHeart();
+requestAnimationFrame(animateHeart);
+
+window.addEventListener("resize", resizeHeart);
+
+
+/* =========================================
+   04. 鼠标和触屏互动
+========================================= */
+
+function updatePointer(event) {
+
+    const rect = heartCanvas.getBoundingClientRect();
+
+    pointer.x = event.clientX - rect.left;
+    pointer.y = event.clientY - rect.top;
+
+    pointer.active = true;
+}
+
+heartCanvas.addEventListener("pointermove", updatePointer);
+
+heartCanvas.addEventListener("pointerleave", () => {
+    pointer.active = false;
+});
+
+function burst(x, y, amount = 35, power = 150) {
+
+    const symbols = ["♥", "♡", "✦", "✧", "❤"];
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < amount; i++) {
+
+        const el = document.createElement("span");
+
+        el.className = "burst-particle";
+
+        el.textContent =
+            symbols[Math.floor(Math.random() * symbols.length)];
+
+        const angle = Math.random() * Math.PI * 2;
+
+        const distance =
+            power * (.35 + Math.random() * .8);
+
+        const dx = Math.cos(angle) * distance;
+        const dy = Math.sin(angle) * distance;
+
+        const duration = .8 + Math.random() * .9;
+
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+
+        el.style.color = [
+            "#ff4cae",
+            "#ff8dce",
+            "#ffe0f3",
+            "#d47aff",
+            "#ffffff"
+        ][Math.floor(Math.random() * 5)];
+
+        el.style.fontSize =
+            (10 + Math.random() * 17) + "px";
+
+        el.style.setProperty("--dx", dx + "px");
+        el.style.setProperty("--dy", dy + "px");
+
+        el.style.setProperty("--duration", duration + "s");
+
+        el.style.setProperty(
+            "--scale",
+            (.6 + Math.random() * 1.7).toString()
+        );
+
+        fragment.appendChild(el);
+
+        setTimeout(() => el.remove(), duration * 1000 + 100);
+    }
+
+    document.body.appendChild(fragment);
+}
+
+function heartBurst() {
+
+    const rect = heartCanvas.getBoundingClientRect();
+
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    targetBeat = 1.4;
+    clickBoost = 1;
+
+    burst(x, y, 60, 190);
+
+    setTimeout(() => {
+        burst(x, y, 35, 110);
+    }, 130);
+}
+
+document.getElementById("heartButton")
+    .addEventListener("click", heartBurst);
+
+// 点击背景，生成小型爱心烟花
+document.addEventListener("pointerdown", event => {
+
+    if (
+        event.target.closest("button") ||
+        event.target.closest(".modal-card") ||
+        event.target.closest(".progress") ||
+        event.target.closest(".volume-row") ||
+        event.target.closest("#intro")
+    ) {
+        return;
+    }
+
+    if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+    }
+
+    burst(event.clientX, event.clientY, 7, 65);
+});
+
+
+/* =========================================
+   05. 打字机
+========================================= */
+
+const typedText = document.getElementById("typedText");
+
+let messageIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeWriter() {
+
+    const current = CONFIG.messages[messageIndex];
+
+    if (!deleting) {
+
+        charIndex++;
+
+        typedText.textContent =
+            current.slice(0, charIndex);
+
+        if (charIndex >= current.length) {
+
+            deleting = true;
+
+            setTimeout(typeWriter, 2300);
+
+            return;
+        }
+
+        setTimeout(typeWriter, 72);
+
+    } else {
+
+        charIndex--;
+
+        typedText.textContent =
+            current.slice(0, charIndex);
+
+        if (charIndex <= 0) {
+
+            deleting = false;
+
+            messageIndex =
+                (messageIndex + 1) % CONFIG.messages.length;
+
+            setTimeout(typeWriter, 350);
+
+            return;
+        }
+
+        setTimeout(typeWriter, 24);
+    }
+}
+
+typeWriter();
+
+
+/* =========================================
+   06. 告白弹窗
+========================================= */
+
+const modal = document.getElementById("modal");
+
+const modalTitle = document.getElementById("modalTitle");
+const modalText = document.getElementById("modalText");
+const modalIcon = document.getElementById("modalIcon");
+
+const closeModalBtn = document.getElementById("closeModal");
+
+let previousFocus = null;
+
+function showModal(title, text, icon = "💗") {
+
+    previousFocus = document.activeElement;
+
+    modalTitle.textContent = title;
+    modalText.textContent = text;
+    modalIcon.textContent = icon;
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+
+    closeModalBtn.focus();
+
+    burst(
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        32,
+        145
+    );
+}
+
+function closeModal() {
+
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+
+    if (previousFocus && previousFocus.focus) {
+        previousFocus.focus();
+    }
+}
+
+closeModalBtn.addEventListener("click", closeModal);
+
+modal.addEventListener("click", event => {
+
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape" && modal.classList.contains("show")) {
+        closeModal();
+    }
+});
+
+document.getElementById("kissBtn").addEventListener("click", () => {
+
+    showModal(
+        "啵！亲亲刘萍萍宝宝",
+        "宝宝，快来收下一个大大的抱抱！\n\n" +
+        "今天也要开开心心的哦。\n" +
+        "如果有一点点累了，" +
+        "就记得给自己一个休息的时间。\n\n" +
+        "至于我嘛，还是会继续偷偷喜欢你。♥",
+        "💋"
+    );
+
+    heartBurst();
+});
+
+document.getElementById("confessBtn").addEventListener("click", () => {
+
+    showModal(
+        "我的真心，只说给你听",
+        CONFIG.confession,
+        "💌"
+    );
+});
+
+document.getElementById("wishBtn").addEventListener("click", () => {
+
+    showModal(
+        "许一个属于我们的愿望",
+        CONFIG.wish,
+        "🌠"
+    );
+
+    heartBurst();
+});
+
+document.getElementById("surpriseBtn").addEventListener("click", () => {
+
+    showModal(
+        "隐藏心动已解锁",
+        CONFIG.surprise,
+        "💖"
+    );
+
+    for (let i = 0; i < 3; i++) {
+
+        setTimeout(() => {
+
+            burst(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight * .7,
+                20,
+                110
+            );
+
+        }, i * 250);
+    }
+});
+
+
+/* =========================================
+   07. 固定 MP3 音乐系统
+========================================= */
+
+const audio = document.getElementById("bgMusic");
+
+const playBtn = document.getElementById("playBtn");
+const muteBtn = document.getElementById("muteBtn");
+
+const disc = document.getElementById("disc");
+
+const musicStatus = document.getElementById("musicStatus");
+
+const progress = document.getElementById("progress");
+const progressFill = document.getElementById("progressFill");
+
+const currentTime = document.getElementById("currentTime");
+const duration = document.getElementById("duration");
+
+const volume = document.getElementById("volume");
+
+let musicContext = null;
+let analyser = null;
+let frequencyData = null;
+let audioSource = null;
+
+let analyserReady = false;
+let audioWarningShown = false;
+
+audio.volume = Number(volume.value);
+
+function formatTime(seconds) {
+
+    if (!Number.isFinite(seconds) || seconds < 0) {
+        return "00:00";
+    }
+
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+
+    return (
+        String(min).padStart(2, "0") +
+        ":" +
+        String(sec).padStart(2, "0")
+    );
+}
+
+function updateMusicState() {
+
+    const playing = !audio.paused && !audio.ended;
+
+    playBtn.textContent = playing ? "Ⅱ" : "▶";
+
+    disc.classList.toggle("playing", playing);
+
+    if (playing) {
+
+        musicStatus.textContent = "正在播放 · 心动同步中";
+
+    } else if (audio.error) {
+
+        musicStatus.textContent = "音乐读取失败，请检查 music.mp3";
+
+    } else if (audio.src) {
+
+        musicStatus.textContent = "音乐已暂停";
+
+    } else {
+
+        musicStatus.textContent = "等待心动旋律";
+    }
+}
+
+/*
+ * Web Audio 频谱分析。
+ * 音乐频率可用于驱动粒子心跳。
+ */
+async function setupAnalyser() {
+
+    if (analyserReady) {
+
+        if (musicContext.state === "suspended") {
+            await musicContext.resume();
+        }
+
+        return;
+    }
+
+    const AudioContextClass =
+        window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+        return;
+    }
+
+    musicContext = new AudioContextClass();
+
+    analyser = musicContext.createAnalyser();
+
+    analyser.fftSize = 256;
+    analyser.smoothingTimeConstant = .78;
+
+    frequencyData =
+        new Uint8Array(analyser.frequencyBinCount);
+
+    audioSource =
+        musicContext.createMediaElementSource(audio);
+
+    audioSource.connect(analyser);
+    analyser.connect(musicContext.destination);
+
+    analyserReady = true;
+
+    await musicContext.resume();
+}
+
+async function playMusic() {
+
+    try {
+
+        await setupAnalyser();
+
+        await audio.play();
+
+        audioWarningShown = false;
+
+        updateMusicState();
+
+    } catch (error) {
+
+        updateMusicState();
+
+        musicStatus.textContent =
+            "无法播放试试换个浏然器";
+
+        if (!audioWarningShown) {
+
+            audioWarningShown = true;
+
+            console.warn(
+                "背景音乐播放失败。请确认 music.mp3 与 index.html 在同一目录。"
+            );
+        }
+    }
+}
+
+playBtn.addEventListener("click", async () => {
+
+    if (audio.paused) {
+
+        await playMusic();
+
+    } else {
+
+        audio.pause();
+
+        updateMusicState();
+    }
+});
+
+audio.addEventListener("play", updateMusicState);
+audio.addEventListener("pause", updateMusicState);
+
+audio.addEventListener("loadedmetadata", () => {
+
+    duration.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener("timeupdate", () => {
+
+    currentTime.textContent = formatTime(audio.currentTime);
+
+    duration.textContent = formatTime(audio.duration);
+
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+
+        const ratio = audio.currentTime / audio.duration;
+
+        progressFill.style.width = ratio * 100 + "%";
+
+        progress.setAttribute(
+            "aria-valuenow",
+            String(Math.round(ratio * 100))
+        );
+    }
+});
+
+audio.addEventListener("error", updateMusicState);
+
+volume.addEventListener("input", () => {
+
+    audio.volume = Number(volume.value);
+
+    if (audio.volume > 0 && audio.muted) {
+        audio.muted = false;
+    }
+
+    updateMuteButton();
+});
+
+function updateMuteButton() {
+
+    const muted = audio.muted || audio.volume === 0;
+
+    muteBtn.textContent = muted ? "×" : "♫";
+
+    muteBtn.setAttribute(
+        "aria-label",
+        muted ? "取消静音" : "切换静音"
+    );
+}
+
+muteBtn.addEventListener("click", () => {
+
+    audio.muted = !audio.muted;
+
+    updateMuteButton();
+});
+
+function seekMusic(clientX) {
+
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+        return;
+    }
+
+    const rect = progress.getBoundingClientRect();
+
+    const ratio = Math.max(
+        0,
+        Math.min(1, (clientX - rect.left) / rect.width)
+    );
+
+    audio.currentTime = ratio * audio.duration;
+}
+
+progress.addEventListener("pointerdown", event => {
+
+    seekMusic(event.clientX);
+
+    if (progress.setPointerCapture) {
+        progress.setPointerCapture(event.pointerId);
+    }
+});
+
+progress.addEventListener("pointermove", event => {
+
+    if (event.buttons === 1) {
+        seekMusic(event.clientX);
+    }
+});
+
+progress.addEventListener("keydown", event => {
+
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+        return;
+    }
+
+    event.preventDefault();
+
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+        return;
+    }
+
+    const delta = event.key === "ArrowRight" ? 5 : -5;
+
+    audio.currentTime = Math.max(
+        0,
+        Math.min(audio.duration, audio.currentTime + delta)
+    );
+});
+
+
+/* =========================================
+   08. 音乐驱动爱心
+========================================= */
+
+function updateMusicEnergy() {
+
+    if (
+        analyserReady &&
+        analyser &&
+        frequencyData &&
+        !audio.paused
+    ) {
+
+        analyser.getByteFrequencyData(frequencyData);
+
+        let sum = 0;
+
+        // 主要读取低频能量
+        const count = Math.min(12, frequencyData.length);
+
+        for (let i = 0; i < count; i++) {
+            sum += frequencyData[i];
+        }
+
+        const raw = count ? sum / count / 255 : 0;
+
+        musicEnergy += (raw - musicEnergy) * .18;
+
+        // 较明显的节拍触发
+        if (raw > .32) {
+            targetBeat = Math.max(targetBeat, raw * .7);
+        }
+
+    } else {
+
+        musicEnergy *= .94;
+    }
+
+    requestAnimationFrame(updateMusicEnergy);
+}
+
+requestAnimationFrame(updateMusicEnergy);
+
+
+/* =========================================
+   09. 开场与音乐启动
+========================================= */
+
+const intro = document.getElementById("intro");
+const app = document.getElementById("app");
+
+document.getElementById("enterBtn").addEventListener("click", async () => {
+
+    intro.classList.add("hide");
+
+    app.classList.add("ready");
+
+    /*
+     * 用户点击按钮属于主动交互。
+     * 尝试播放固定的 music.mp3。
+     */
+    await playMusic();
+
+    setTimeout(() => {
+
+        heartBurst();
+
+    }, 450);
+});
+
+
+/* =========================================
+   10. 页面清理
+========================================= */
+
+window.addEventListener("pagehide", () => {
+
+    if (musicContext && musicContext.state !== "closed") {
+        musicContext.close().catch(() => {});
+    }
+});
+
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+        pointer.active = false;
+    }
+});
+
+</script>
+
+</body>
+</html>
+
